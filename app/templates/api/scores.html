@@ -1,0 +1,170 @@
+{% extends "base_master.html" %}
+
+{%  block title %}JSON Test{% endblock %}
+
+{% block css %}
+    <style>
+        body{background-image: url("{{ url_for('static', filename = 'jpg/Testing.png') }}")}
+        .wrapper{width:400px; padding:10px;background-color: #a9a9a9;border:1px solid black;margin: 30px;}
+        .drop{margin-bottom: 20px}
+        #none{display: none;}
+    </style>
+{% endblock %}
+
+{%  block body %}
+<div class="row">
+<!-- form for submission of player data -->
+    <div class="small-6 medium-6 large-6 columns">
+    <div class="wrapper">
+        <div align="center">
+            <h1 class="small-12 large-12 columns">Enter player</h1>
+        </div>
+
+        <div class="text-center">
+        <form id="send_player" data-abide method="post">
+                {{ player.hidden_tag() }}
+            <div align="center" class="drop">
+                {{ player.username.label() }} {{ player.username(required="required") }}
+                <small class="error">You must enter the username.</small>
+            </div>
+            <div align="center" class="drop">
+                {{ player.name.label() }} {{ player.name(required="required") }}
+                <small class="error">You must enter full name.</small>
+            </div>
+            <div align="center" class="drop">
+                {{ player.submit() }}
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+<!-- end of player data form -->
+<!-- form for submission of score data -->
+    <div class="small-6 medium-6 large-6 columns">
+    <div class="wrapper">
+        <div align="center">
+            <h1 class="small-12 large-12 columns">Enter score</h1>
+        </div>
+        <div class="text-center">
+        <form id="send_scores" data-abide method="post">
+               {{ score.hidden_tag() }}
+            <div align="center" class="drop">
+                <label for="player">Player:</label>
+                <select name="player" id="player">
+                    {% for player_name in player_names %}
+                        <option>{{ player_name.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div align="center" class="drop">
+                {{ score.score.label() }} {{ score.score(required="required") }}
+                <small class="error">You must enter the score.</small>
+            </div>
+
+            <div align="center" class="drop">
+                {{ score.details.label() }} {{ score.details(required="required") }}
+                <small class="error">You must detail.</small>
+            </div>
+
+            <div class="drop" align="center">
+                <label for="select">Game:</label>
+                <select name="select" id="select">
+                    {% for game_name in game_names %}
+                        <option>{{ game_name.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div id="none">
+                {{ score.time(value=time_now) }}
+            </div>
+
+            <div align="center" class="drop">
+                {{ score.submit() }}
+            </div>
+        </form>
+        </div>
+        <br>
+        <div align="center" class="drop">
+            <p><a href="{{ url_for('v0.get_high_scores') }}">Get High Scores</a></p>
+        </div>
+    </div>
+    </div>
+<!-- end of score data form -->
+</div>
+
+{% endblock %}
+
+{% block js %}
+<!--javascript functions are used to encode the data from the #send_scores and #send_player forms into json format
+    once the forms have been submitted, except for 'details' field in #send_scores form which has to be initially
+    entered in json format -->
+    <script>
+    $(document).ready(function(){
+        $( "#send_scores" ).submit(function( event ) {
+
+            event.preventDefault();
+
+            var $form = $( this );
+            player = $form.find( "select[name='player']").val();
+            score = $form.find( "input[name='score']").val();
+            details = $form.find( "input[name='details']").val();
+            game = $form.find( "select[name='select']").val();
+            time = $form.find( "input[name='time']").val();
+
+
+            var data = {"player":player, "score":score, "details":JSON.parse(details), "game":game, "time":time};
+            data = JSON.stringify(data);
+            console.log("Sending: ",data);
+
+            $.ajax({
+                url: '/api/v0/scores-sent',
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function(result){
+                    console.log("success: ", result)
+                },
+                error: function(result){
+                    console.log("error: ", result)
+                }
+            });
+            }
+        );
+    });
+
+    $(document).ready(function(){
+        $( "#send_player" ).submit(function( event ) {
+
+            event.preventDefault();
+
+            var $form = $( this );
+            username = $form.find( "input[name='username']").val();
+            name = $form.find( "input[name='name']").val();
+
+            var data = {"username":username, "name":name};
+            data = JSON.stringify(data);
+            console.log("Sending: ",data);
+
+            $.ajax({
+                url: '/api/v0/player-sent',
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function(result){
+                    console.log("success: ", result)
+                },
+                error: function(result){
+                    console.log("error: ", result)
+                }
+            });
+            }
+        );
+    });
+
+    </script>
+
+{% endblock %}

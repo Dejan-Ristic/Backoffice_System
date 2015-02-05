@@ -1,0 +1,71 @@
+{% extends "base_topbar.html" %}
+
+
+{% block title %}
+    Deleted users
+{% endblock %}
+
+<!-- main menu items for super admin -->
+{%  block nav_menu %}
+    <li>
+        <a href="{{ url_for('allusers.games') }}">Games</a>
+    </li>
+    <li>
+        <a href="{{ url_for('allusers.scores') }}">Scores</a>
+    </li>
+    <li class="active">
+        <a href="{{ url_for('allusers.users') }}">Users</a>
+    </li>
+{% endblock %}
+<!-- end of main menu items -->
+
+{% block body %}
+    <h2 class="text-center headers"><b>Deleted users</b></h2>
+    <div class="small-12 columns text-center">
+        <h3 class="bold warning login_message"></h3>
+    </div>
+
+    <!-- button for return to 'active users' -->
+
+    <div class="row">
+        <div class="small-6 small-centered medium-3 large-2 columns text-center">
+            <div class="row">
+                <button class="small-12 columns button_table">
+                    <a href="{{ url_for('allusers.users') }}">Active users</a>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- end of button for return to 'active users' -->
+
+    <!-- table for display of 'deleted users' -->
+    <div class="row users_table_div">
+        <table id="myTable" align="center">
+            <thead>
+            <tr>
+                <th class="head_sort">Username</th>
+                <th class="head_sort">Name</th>
+                <th class="head_sort">Role</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td data-title="Username"><a href="{{ url_for('allusers.restore_user', id=user.id) }}">{{ user.username }}</a></td>
+                        <td data-title="Name"><a href="{{ url_for('allusers.restore_user', id=user.id) }}">{{ user.name }}</a></td>
+                        <td data-title="Role"><a href="{{ url_for('allusers.restore_user', id=user.id) }}">{{ user.user_role.role }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- end of table -->
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("#myTable").tablesorter();
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base_master.html" %}
+
+
+{% block title %}
+    Restore game
+{% endblock %}
+
+{% block body %}
+    <h2 class="text-center headers"><b>Restore game</b></h2>
+    <div class="small-12 columns text-center">
+        <h3 class="bold warning login_message"></h3>
+    </div>
+
+    <!-- display of game to be restored -->
+    <div class="row games_table_div">
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th>Short name</th>
+                    <th>Full name</th>
+                    <th>Version</th>
+                    <th>Last updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="no_link_row">
+                    <td data-title="Short name">{{ game.short_name }}</td>
+                    <td data-title="Full name">{{ game.name }}</td>
+                    <td data-title="Version">{{ game.version }}</td>
+                    <td data-title="Last updated">{{ game.last_date }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- end of display -->
+
+    <div class="row">
+        <div class="small-6 columns text-centered">
+            <div class="row button_row">
+                <div class="small-12 small-centered medium-6 large-4 columns text-center">
+                    <div class="row">
+                        <form method="post" data-confirm='{"modal_class" :"reveal-modal",
+                        "title":"Are you sure you want to restore?","title_class":"title_text",
+                        "body_class":"body_text","body":" ", "ok":"Restore",
+                        "footer_class":"reveal_button"}'>
+                            {{ restore.hidden_tag() }}
+                            <button class="small-12 columns button_table" type="submit">Restore game</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="small-6 columns text-centered">
+            <div class="row button_row">
+                <div class="small-12 small-centered medium-6 large-4 columns text-center">
+                    <div class="row">
+                        <button class="small-12 columns button_table">
+                            <a href="{{ url_for('allusers.games') }}">Back to games</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("#myTable").tablesorter();
+        });
+        $(document).confirmWithReveal(
+        );
+    </script>
+{% endblock %}

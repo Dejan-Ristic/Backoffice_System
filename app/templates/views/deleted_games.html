@@ -1,0 +1,78 @@
+{% extends "base_topbar.html" %}
+
+
+{% block title %}
+    Deleted games
+{% endblock %}
+
+<!-- main menu items -->
+{%  block nav_menu %}
+    <li class="active">
+        <a href="{{ url_for('allusers.games') }}">Games</a>
+    </li>
+    <li>
+        <a href="{{ url_for('allusers.scores') }}">Scores</a>
+    </li>
+    <!-- 'users' item in main menu is dispalyed for superadmin only -->
+    {% if user.user_role.role == "superadmin" %}
+        <li>
+            <a href="{{ url_for('allusers.users') }}">Users</a>
+        </li>
+    {% endif %}
+    <!-- end of 'users' item -->
+{% endblock %}
+<!-- end of main menu items -->
+
+{% block body %}
+    <h2 class="text-center headers"><b>Deleted games</b></h2>
+    <div class="small-12 columns text-center">
+        <h3 class="bold warning login_message"></h3>
+    </div>
+
+    <!-- button for return to 'active games' -->
+
+    <div class="row">
+        <div class="small-6 small-centered medium-3 large-2 columns text-center">
+            <div class="row">
+                <button class="small-12 columns button_table">
+                    <a href="{{ url_for('allusers.games') }}">Active games</a>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- end of button for return to 'active games' -->
+
+    <!-- table for display of 'deleted games' -->
+    <div class="row games_table_div">
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th class="head_sort">Short name</th>
+                    <th class="head_sort">Full name</th>
+                    <th class="head_sort">Version</th>
+                    <th class="head_sort">Last updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                    <tr>
+                        <td data-title="Short name"><a href="{{ url_for('allusers.restore_game', id=game.id) }}">{{ game.short_name }}</a></td>
+                        <td data-title="Name"><a href="{{ url_for('allusers.restore_game', id=game.id) }}">{{ game.name }}</a></td>
+                        <td data-title="Version"><a href="{{ url_for('allusers.restore_game', id=game.id) }}">{{ game.version }}</a></td>
+                        <td data-title="Last updated"><a href="{{ url_for('allusers.restore_game', id=game.id) }}">{{ game.last_date }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- end of table -->
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("#myTable").tablesorter();
+        });
+    </script>
+{% endblock %}

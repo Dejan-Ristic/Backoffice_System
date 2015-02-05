@@ -1,0 +1,99 @@
+<!--This is the base template which all other templates in the application inherit.
+    Is contains the main menu and links to foundation.css file and several scripts which are used throughout the
+    entire application. -->
+
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+
+        {% block title %} <!-- block for page title -->
+        {% endblock %}
+
+        </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'css/normalize.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'css/app.css') }}">
+
+
+{#        <link rel="stylesheet" href="{{ url_for('static', filename = 'css/styling.css') }}">#}
+
+        {% block css %} <!-- block for additional css descriptions and links to additional .css files -->
+        {% endblock %}
+
+    </head>
+    <body class="topbar_template">
+<!-- topbar menu start -->
+        <div class="fixed">
+            <nav class="top-bar" data-topbar role="navigation">
+                <ul class="title-area">
+                    <li class="name">
+                        <h1>Backoffice System</h1>
+                    </li>
+                    <li class="toggle-topbar menu-icon">
+                        <a href="#"><span></span></a>
+                    </li>
+                </ul>
+                <section class="top-bar-section">
+                    <ul class="left">
+                        <li class="has-form">
+                            <div class="row collapse">
+                                <form method='POST'>
+                                        {{ search.hidden_tag() }}
+                                    <div class="small-8 columns">
+                                        {{ search.search_item(required="required", pattern="[a-zA-Z0-9.-]+",
+                                            placeholder="Enter query") }}
+                                    </div>
+                                    <div class="small-4 columns">
+                                        <button type="submit">Search</button>
+{#                                        {{ search.submit(class="expand") }}#}
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="left menu_items">
+                        {%  block nav_menu %} <!-- block for main menu items -->
+                        {% endblock %}
+                    </ul>
+                    <div class="logout">
+                        <div class="button_div">
+                            <button><a href="{{ url_for('allusers.logout') }}">Log Out</a></button>
+                        </div>
+                        <div>
+                            <p>{{ user.username }}, logged in</p>
+                        </div>
+                     </div>
+                </section>
+            </nav>
+        </div>
+<!-- topbar menu end -->
+
+        {% block body %} <!-- block for additional parts of <body> -->
+        {% endblock %}
+
+    <script src="{{ url_for('static', filename = 'js/vendor/modernizr.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/vendor/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/vendor/placeholder.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/foundation/foundation.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/foundation/foundation.topbar.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/foundation/foundation.abide.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/foundation/foundation.reveal.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/confirm_with_reveal.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/__jquery.tablesorter/jquery.tablesorter.js') }}"></script>
+
+        {%  block js_script %} <!-- block for additional .js files -->
+        {% endblock %}
+
+        {%  block js %} <!-- block for additional javascript functions  -->
+        {% endblock %}
+
+        <script>
+            $(document).ready(function () {
+                $(document).foundation();
+            })
+        </script>
+    </body>
+</html>
+

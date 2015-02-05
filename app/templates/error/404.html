@@ -1,0 +1,16 @@
+{% extends "error/base_error.html" %}
+{% block title %}404{% endblock %}
+{% block css %}
+    <style>
+        body {background-image: url("{{ url_for('static', filename = 'jpg/mochaGrunge.png') }}")}
+        p {text-align: center;
+            font-size: 52px;
+            color:#4d4d4d;
+            }
+    </style>
+{% endblock %}
+
+{% block content %}
+<p>ERROR 404!</p>
+<p>This page doesn't exist.</p>
+{% endblock %}

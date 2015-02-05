@@ -1,0 +1,74 @@
+{% extends "base_master.html" %}
+
+
+{% block title %}
+    Restore user
+{% endblock %}
+
+{% block body %}
+    <h2 class="text-center headers"><b>Restore user</b></h2>
+    <div class="small-12 columns text-center">
+        <h3 class="bold warning login_message"></h3>
+    </div>
+
+    <!-- display of user to be restored -->
+    <div class="row users_table_div">
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="no_link_row">
+                    <td data-title="Username">{{ user.username }}</td>
+                    <td data-title="Name">{{ user.name }}</td>
+                    <td data-title="Role">{{ user.user_role.role }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- end of display -->
+
+    <div class="row">
+        <div class="small-6 columns text-centered">
+            <div class="row button_row">
+                <div class="small-12 small-centered medium-6 large-4 columns text-center">
+                    <div class="row">
+                        <form method="post" data-confirm='{"modal_class" :"reveal-modal",
+                        "title":"Are you sure you want to restore?","title_class":"title_text",
+                        "body_class":"body_text","body":" ", "ok":"Restore",
+                        "footer_class":"reveal_button"}'>
+                            {{ restore.hidden_tag() }}
+                            <button class="small-12 columns button_table" type="submit">Restore user</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="small-6 columns text-centered">
+            <div class="row button_row">
+                <div class="small-12 small-centered medium-6 large-4 columns text-center">
+                    <div class="row">
+                        <button class="small-12 columns button_table">
+                            <a href="{{ url_for('allusers.users') }}">Back to Users</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("#myTable").tablesorter();
+        });
+        $(document).confirmWithReveal(
+        );
+    </script>
+{% endblock %}

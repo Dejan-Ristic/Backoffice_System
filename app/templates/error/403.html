@@ -1,0 +1,16 @@
+{% extends "error/base_error.html" %}
+{% block title %}403{% endblock %}
+{% block css %}
+    <style>
+        body {background-image: url("{{ url_for('static', filename = 'jpg/mochaGrunge.png') }}")}
+        p {text-align: center;
+            font-size: 52px;
+            color:#4d4d4d;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<p>ERROR 403!</p>
+<p>You are not allowed.</p>
+{% endblock %}

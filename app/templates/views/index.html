@@ -1,0 +1,55 @@
+{% extends "base_master.html" %}
+
+{%  block title %}
+    Backoffice Login
+{% endblock %}
+
+{%  block body %}
+    <div class="row">
+        <div class="small-12 columns" >
+            <h1 class="text-center bold headers main">FACTORY WORLDWIDE</h1>
+        </div>
+
+        <div class="small-12 columns">
+            {% for message in get_flashed_messages() %}
+                {% if message %}
+                    <h3 class="text-center bold warning login_message">
+                    {{ message }}
+                    </h3>
+                {% endif %}
+                {% else %}
+                <h3 class="text-center bold headers login_message">Enter your username and password</h3>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <form method='POST' data-abide>
+                {{ form.hidden_tag() }}
+            <div class="row">
+            <div class="large-4 large-offset-4 medium-8 medium-offset-2 small-10 small-offset-1 columns">
+                {{ form.username.label(class="text-center bold") }}
+                {{ form.username(required="required", pattern="[a-zA-Z0-9]+") }}
+                <small class="error">You must enter the correct username using only letters and numbers.</small>
+            </div>
+            </div>
+
+            <div class="row">
+            <div class="large-4 large-offset-4 medium-8 medium-offset-2 small-10 small-offset-1 columns">
+                {{ form.password.label(class="text-center bold") }}
+                {{ form.password(required="required", pattern="[a-zA-Z0-9]+") }}
+                <small class="error">You must enter the correct password using only letters and numbers.</small>
+            </div>
+            </div>
+
+            <div class="row">
+                <div class="small-3 small-centered medium-2 large-2 columns text-center">
+                    <div class="row">
+                        <button class="small-12 columns grey_button" type="submit">Log in</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

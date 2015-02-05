@@ -1,0 +1,49 @@
+<!--This is the base template which the index.html template inherits.
+    Is contains links to foundation.css file and several scripts which are used throughout the entire application. -->
+
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+
+        {% block title %}
+        {% endblock %}
+
+        </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'css/normalize.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'css/app.css') }}">
+
+        {% block css %}
+        {% endblock %}
+
+    </head>
+    <body>
+
+        {% block body %}
+        {% endblock %}
+
+        <script src="{{ url_for('static', filename = 'js/vendor/modernizr.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/vendor/jquery.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/vendor/placeholder.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/foundation/foundation.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/foundation/foundation.topbar.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/foundation/foundation.abide.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/foundation/foundation.reveal.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/confirm_with_reveal.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/__jquery.tablesorter/jquery.tablesorter.js') }}"></script>
+
+        {%  block js_script %}
+        {% endblock %}
+
+        {% block js %}
+        {% endblock %}
+
+        <script>
+            $(document).ready(function () {
+                $(document).foundation();
+            })
+        </script>
+    </body>
+</html>

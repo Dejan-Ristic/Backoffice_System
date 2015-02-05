@@ -1,0 +1,122 @@
+{% extends "base_master.html" %}
+
+
+{% block title %}
+    Edit the User
+{% endblock %}
+
+{% block body %}
+    <h2 class="text-center headers"><b>Edit the user</b></h2>
+    <div class="small-12 columns text-center">
+        <h3 class="bold warning login_message"></h3>
+    </div>
+
+    <!-- display of user to be edited -->
+    <div class="row users_table_div">
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="no_link_row">
+                    <td data-title="Username">{{ user.username }}</td>
+                    <td data-title="Name">{{ user.name }}</td>
+                    <td data-title="Role">{{ user.user_role.role }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- end of display -->
+
+    <div class="row">
+        <div class="small-4 columns text-centered button_row">
+            <div class="row">
+                <div class="small-12 small-centered medium-8 large-6 columns text-center">
+                    <button class="small-12 columns button_table edit_button">
+                        <a href="#" data-reveal-id="edit_user">Edit user</a> <!-- button for user edit -->
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="small-4 columns text-centered button_row">
+            <div class="row">
+                <div class="small-12 small-centered medium-8 large-6 columns text-center">
+                    <form method="post" data-confirm='{"modal_class" :"reveal-modal",
+                        "title":"Are you sure you want to delete?","title_class":"title_text",
+                        "body_class":"body_text","body":" ", "ok":"Delete",
+                        "footer_class":"reveal_button"}'>
+                        {{ delete.hidden_tag() }}
+                        <!-- button for user delete with drop-down confirmation-->
+                        <button type="submit" class="small-12 columns button_table edit_button">Delete user</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="small-4 columns text-centered button_row">
+            <div class="row">
+                <div class="small-12 small-centered medium-8 large-6 columns text-center">
+                    <button class="small-12 columns button_table edit_button">
+                        <a href="{{ url_for('allusers.users') }}">Back to Users</a>  <!-- button for return to users -->
+                    </button>
+                </div>
+             </div>
+        </div>
+    </div>
+
+    <!-- form for user edit -->
+    <div id="edit_user" class="reveal-modal" data-reveal>
+        <form method='POST' data-abide>
+                {{ edit_user.hidden_tag() }}
+        <div class="row">
+            <div class="small-12 large-12 columns">
+                {{ edit_user.username.label() }}
+                {{ edit_user.username(value=user.username, required="required", pattern="[a-zA-Z0-9]+") }}
+                <small class="error">You must enter the username.</small>
+            </div>
+            <div class="small-12 large-12 columns">
+                {{ edit_user.password.label() }}
+                {{ edit_user.password(pattern="[a-zA-Z0-9]+") }}
+                <small class="error">You must enter the password.</small>
+            </div>
+            <div class="small-12 large-12 columns">
+                {{ edit_user.name.label() }}
+                {{ edit_user.name(value=user.name, required="required", pattern="[a-zA-Z0-9]+") }}
+                <small class="error">You must enter the name.</small>
+            </div>
+            <div class="small-12 large-12 columns">
+                <label for="role">Select user role</label>
+                <select id="role" name="role">
+                    {% for r in role_names %}
+                        <option value={{ r.id }} {% if user.user_role.role == r.role %} selected {% endif %}>
+                            {{ r.role }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+           <div class="row">
+                <div class="small-6 small-centered medium-4 columns text-center">
+                    <div class="row">
+                        <button class="small-12 columns grey_button" type="submit">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <a class="close-reveal-modal">&#215;</a>
+    </div>
+    <!-- end of form for user edit -->
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("#myTable").tablesorter();
+        });
+        $(document).confirmWithReveal( <!-- function for drop-down delete confirmation -->
+        );
+    </script>
+{% endblock %}
